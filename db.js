@@ -7,6 +7,11 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
+
+  // SSL for cloud PostgreSQL (Neon), disabled for local PostgreSQL
+  ssl: process.env.DB_HOST !== 'localhost'
+    ? { rejectUnauthorized: false }
+    : false,
 });
 
 pool.on('connect', () => {

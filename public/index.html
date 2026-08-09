@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Expense Tracker</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-dark px-3">
+  <span class="navbar-brand fw-bold"><i class="fa-solid fa-wallet me-2"></i>Expense Tracker</span>
+</nav>
+
+<div class="container py-4">
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card summary-card total-card">
+        <div class="card-body">
+          <p class="mb-1 text-uppercase small">Total Spent</p>
+          <h3 id="totalAmount">₹0.00</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card summary-card">
+        <div class="card-body">
+          <p class="mb-1 text-uppercase small text-muted">Transactions</p>
+          <h3 id="totalCount">0</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card summary-card">
+        <div class="card-body">
+          <p class="mb-1 text-uppercase small text-muted">Top Category</p>
+          <h3 id="topCategory">—</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Breakdown -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h6 class="card-title mb-3">Spending by Category</h6>
+      <div id="categoryBars"></div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+    <div class="d-flex gap-2 flex-wrap">
+      <input type="text" id="searchInput" class="form-control" placeholder="Search expenses..." style="width:220px;">
+      <select id="categoryFilter" class="form-select" style="width:170px;">
+        <option value="All">All Categories</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#expenseModal" id="addExpenseBtn">
+      <i class="fa-solid fa-plus me-1"></i> Add Expense
+    </button>
+  </div>
+
+  <!-- Expense Table -->
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th class="text-end">Amount</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="expenseTableBody"></tbody>
+      </table>
+    </div>
+    <div id="emptyState" class="text-center text-muted py-5 d-none">
+      <i class="fa-regular fa-folder-open fa-2x mb-2"></i>
+      <p>No expenses found. Add your first one!</p>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal fade" id="expenseModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="expenseForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Add Expense</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="expenseId">
+
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" required maxlength="150">
+          </div>
+
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label class="form-label">Amount (₹)</label>
+              <input type="number" step="0.01" min="0" class="form-control" id="amount" required>
+            </div>
+            <div class="col-6 mb-3">
+              <label class="form-label">Category</label>
+              <select class="form-select" id="category" required>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Health">Health</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Education">Education</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" id="expense_date" required>
+          </div>
+
+          <div class="mb-1">
+            <label class="form-label">Notes (optional)</label>
+            <textarea class="form-control" id="notes" rows="2" maxlength="300"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="toast" class="toast align-items-center text-white border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="toastBody"></div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
